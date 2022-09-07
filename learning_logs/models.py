@@ -7,7 +7,7 @@ class Topic(models.Model):
     text = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    test_colum = models.CharField(max_length=20)
+    # test_colum = models.CharField(max_length=20)
 #     print("サーバー稼働時に呼び出される？")
 
     def __str__(self):
