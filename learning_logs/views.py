@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry
-from .forms import TopicForm, EntryForm
+from .forms import TopicForm, EntryForm, UploadForm
 
 # Create your views here.
 def index(request):
@@ -65,18 +65,25 @@ def new_entry(request, topic_id):
     if request.method != 'POST':
         # データは送信されなかったので空のフォームを生成する
         form = EntryForm()
+        image_form = UploadForm()
 
     else:
         # POSTでデータが送信されたのでこれを処理する
         form = EntryForm(data=request.POST)
-        if form.is_valid():
-            new_entry = form.save(commit=False)
+        image_form = UploadForm(data=request.POST)
+        if form.is_valid() and image_form.is_valid():
+            # form_get_image = image_form.save(commit=False)
+            new_entry = image_form.save(commit=False)
+            # new_entry = form_get_image
             new_entry.topic = topic
             new_entry.save()
+            # upload_image = image_form.save(commit=False)
+            # upload_image.save()
+            
             return redirect('learning_logs:topic', topic_id=topic_id)
 
     # 空または無効のフォームを送信する
-    context = {'topic': topic, 'form': form}
+    context = {'topic': topic, 'form': form, 'image_form':image_form }
     return render(request, 'learning_logs/new_entry.html', context)
 
 
