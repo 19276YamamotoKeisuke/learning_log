@@ -34,13 +34,13 @@ def topic(request, topic_id):
     return render(request, 'learning_logs/topic.html', context)
 
 
-# def entry(request, entry_id):
-#     """各記事の詳細ページ_topic/<topic_id>/<entry_id>で続ける"""
-#     entry = Entry.objects.get(id=entry_id).order_by('date_added')
-
-#     # entry = Entry.object.order_by('date_added')
-#     context = {'entry': entry}
-#     return render(request, 'learning_logs/every_entry.html', context)
+def entry(request, entry_id):
+    """各記事の詳細ページ_topics/entry/<entry_id>で続ける"""
+    entry = Entry.objects.get(id=entry_id)
+    
+    # entry = Entry.object.order_by('date_added')
+    context = {'entry': entry}
+    return render(request, 'learning_logs/every_entry.html', context)
 
 
 @login_required

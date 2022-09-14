@@ -6,6 +6,7 @@
 
     <p>新しい記事を追加:</p>
     <form action="{% url 'learning_logs:new_entry' topic.id %}" method='post' enctype='multipart/form-data'>
+        {% comment %} 後でURL差し替える {% endcomment %}
         {% csrf_token %}
         {{ form.as_p }}
         <button name='submit'>記事を追加</button>
