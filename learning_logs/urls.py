@@ -4,6 +4,9 @@ from django.urls import path
 
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'learning_logs'
 urlpatterns = [
     #ホームページ
@@ -18,4 +21,6 @@ urlpatterns = [
     path('new_entry/<int:topic_id>/', views.new_entry, name = 'new_entry'),
     # 記事の編集ページ
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
+    # 画像用
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
