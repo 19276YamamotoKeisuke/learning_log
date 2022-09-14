@@ -15,8 +15,8 @@ class EntryForm(forms.ModelForm):
     """新規記事追加用フォーム"""
     class Meta:
         model = Entry
-        fields = Entryfields = ['text']
-        labels = {'text': ''}
+        fields = Entryfields = ['text','image']
+        labels = {'text': '','image':''}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}
 
 class UploadForm(forms.ModelForm):

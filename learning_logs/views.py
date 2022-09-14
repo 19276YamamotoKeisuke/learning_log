@@ -78,16 +78,11 @@ def new_entry(request, topic_id):
 
     else:
         # POSTでデータが送信されたのでこれを処理する
-        form = EntryForm(data=request.POST)
-        image_form = UploadForm(data=request.POST)
-        if form.is_valid() and image_form.is_valid():
-            # form_get_image = image_form.save(commit=False)
-            new_entry = image_form.save(commit=False)
-            # new_entry = form_get_image
+        form = EntryForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
-            # upload_image = image_form.save(commit=False)
-            # upload_image.save()
             
             return redirect('learning_logs:topic', topic_id=topic_id)
 
