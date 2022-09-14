@@ -11,7 +11,8 @@
     </p>
 
     {% for entry in entries %}
-    {% comment %} <a href="{% url 'learning_logs:entry' entry.id %}"> {% endcomment %}
+    <a href="{% url 'learning_logs:entry' entry.id %}">
+        {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
         <div class="card mb-3">
             <h4 class="card-header">
                 {{ entry.date_added|date:'Y年m月d日 H:i' }}
@@ -22,7 +23,7 @@
             <div class="card-body">
                 {{ entry.text|linebreaks }}
             </div>
-        {% comment %} </div> {% endcomment %}
+        </div>
     </a>
 
     {% empty %}

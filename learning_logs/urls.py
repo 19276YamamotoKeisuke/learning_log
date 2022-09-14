@@ -16,7 +16,7 @@ urlpatterns = [
     # 個別トピックの詳細ページ
     path('topics/<int:topic_id>/', views.topic, name='topic'),
     # 個別記事の詳細ページ
-    path('topics/<int:topic_id>/<int:entry_id>', views.entry, name='entry'),
+    path('topics/entry/<int:entry_id>', views.entry, name='entry'),
     # 新規トピックの追加ページ
     path('new_topic/', views.new_topic, name='new_topic'),
     # 新規記事の追加ページ
