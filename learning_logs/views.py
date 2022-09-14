@@ -74,7 +74,7 @@ def new_entry(request, topic_id):
     if request.method != 'POST':
         # データは送信されなかったので空のフォームを生成する
         form = EntryForm()
-        image_form = UploadForm()
+        # image_form = UploadForm()
 
     else:
         # POSTでデータが送信されたのでこれを処理する
@@ -87,7 +87,7 @@ def new_entry(request, topic_id):
             return redirect('learning_logs:topic', topic_id=topic_id)
 
     # 空または無効のフォームを送信する
-    context = {'topic': topic, 'form': form, 'image_form':image_form }
+    context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
 
 
