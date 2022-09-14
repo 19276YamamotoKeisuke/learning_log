@@ -32,11 +32,11 @@ class Entry(models.Model):
         return self.text
 
 
-class UploadImage(models.Model):
-    """画像保存データベースtest"""
-    # entry = models.ForeignKey(Entry, on_delete = models.CASCADE)
-    image = models.ImageField(upload_to='img/', null=True, blank=True)
-    title = models.CharField(max_length=200, null=True, blank=True)
+# class UploadImage(models.Model):
+#     """画像保存データベースtest"""
+#     # entry = models.ForeignKey(Entry, on_delete = models.CASCADE)
+#     image = models.ImageField(upload_to='img/', null=True, blank=True)
+#     title = models.CharField(max_length=200, null=True, blank=True)
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
