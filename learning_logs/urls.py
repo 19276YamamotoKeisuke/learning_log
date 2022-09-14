@@ -15,10 +15,12 @@ urlpatterns = [
     path('topics/', views.topics, name = 'topics'),
     # 個別トピックの詳細ページ
     path('topics/<int:topic_id>/', views.topic, name='topic'),
+    # 個別記事の詳細ページ
+    path('topics/<int:topic_id>/<int:entry_id>', views.entry, name='entry'),
     # 新規トピックの追加ページ
     path('new_topic/', views.new_topic, name='new_topic'),
     # 新規記事の追加ページ
-    path('new_entry/<int:topic_id>/', views.new_entry, name = 'new_entry'),
+    path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
     # 記事の編集ページ
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
     # 画像用
