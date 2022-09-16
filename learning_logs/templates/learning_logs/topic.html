@@ -6,9 +6,9 @@
 
 {% block content %}
 
-    <p>
-        <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_entry' topic.id %}">＋ 新しい記事を追加</a></button>
-    </p>
+    {% comment %} <p>
+        <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_entry'%}">＋ 新しい記事を追加</a></button>
+    </p> {% endcomment %}
 
     {% for entry in entries %}
     <a href="{% url 'learning_logs:entry' entry.id %}">
@@ -21,7 +21,7 @@
                 </a></small></button>
             </h4>
             <div class="card-body">
-                {{ entry.text|linebreaks }}
+                {{ entry.title|linebreaks }}
             </div>
         </div>
     </a>
