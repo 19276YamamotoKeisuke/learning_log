@@ -1,13 +1,13 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block page_header %}
-<h3>{{ topic }}</h3>
+<h3>記事一覧</h3>
 {% endblock page_header %}
 
 {% block content %}
 
     <p>
-        <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_entry' topic.id %}">＋ 新しい記事を追加</a></button>
+        {% comment %} <a href="{% url 'learning_logs:new_entry' topic.id %}">新しい記事を追加</a> {% endcomment %}
     </p>
 
     {% for entry in entries %}
@@ -15,10 +15,10 @@
         {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
         <div class="card mb-3">
             <h4 class="card-header">
-                {{ entry.date_added|date:'Y年m月d日 H:i'}}
-                <small><a href="{% url 'learning_logs:edit_entry' entry.id %}"><button type="button" class="btn btn-outline-secondary">
+                {{ entry.date_added|date:'Y年m月d日 H:i'}}</a>
+                {% comment %} <small><a href="{% url 'learning_logs:edit_entry' entry.id %}"><button type="button" class="btn btn-outline-secondary">
                     記事を編集
-                </a></small></button>
+                </a></small></button> {% endcomment %}
             </h4>
             <div class="card-body">
                 {{ entry.text|linebreaks }}
