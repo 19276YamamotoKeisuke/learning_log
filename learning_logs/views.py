@@ -74,9 +74,9 @@ def new_topic(request):
 
 
 @login_required
-def new_entry(request, topic_id):
+def new_entry(request):
     """特定のトピックに新規記事を追加する"""
-    topic = Topic.objects.get(id=topic_id)
+    # topic = Topic.objects.get(id=topic_id)
 
     if request.method != 'POST':
         # データは送信されなかったので空のフォームを生成する
@@ -88,13 +88,13 @@ def new_entry(request, topic_id):
         form = EntryForm(request.POST, request.FILES)
         if form.is_valid():
             new_entry = form.save(commit=False)
-            new_entry.topic = topic
+            # new_entry.topic = topic
             new_entry.save()
             
-            return redirect('learning_logs:topic', topic_id=topic_id)
+            return redirect('learning_logs:entries')
 
     # 空または無効のフォームを送信する
-    context = {'topic': topic, 'form': form}
+    context = {'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
 
 
