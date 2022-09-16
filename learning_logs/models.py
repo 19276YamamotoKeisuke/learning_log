@@ -16,6 +16,7 @@ class Topic(models.Model):
 
 class Entry(models.Model):
     """トピックに関して学んだ具体的なこと"""
+    title = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add = True)

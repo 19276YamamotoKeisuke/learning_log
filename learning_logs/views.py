@@ -85,7 +85,7 @@ def new_entry(request, topic_id):
 
     else:
         # POSTでデータが送信されたのでこれを処理する
-        form = EntryForm(request.POST, request.FILES)
+        form = EntryForm(request.POST, request.FILES, request.POST)
         if form.is_valid():
             new_entry = form.save(commit=False)
             new_entry.topic = topic
