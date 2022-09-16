@@ -34,6 +34,13 @@ def topic(request, topic_id):
     return render(request, 'learning_logs/topic.html', context)
 
 
+def entries(request):
+    """全ての記事を表示する"""
+    entries = Entry.objects.order_by('date_added').reverse()
+    context = {'entries': entries}
+    return render(request, 'learning_logs/entries.html', context)
+
+
 def entry(request, entry_id):
     """各記事の詳細ページ_topics/entry/<entry_id>で続ける"""
     entry = Entry.objects.get(id=entry_id)
