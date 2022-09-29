@@ -15,7 +15,7 @@ def index(request):
 def topics(request):
     """全てのトピックを表示する"""
     # topics = Topic.objects.order_by('date_added')
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+    topics = Topic.objects.order_by('date_added')
     context = {'topics': topics}
 #     objectsは全てのデータを指している→filterでuser選別
     return render(request, 'learning_logs/topics.html', context)
@@ -26,14 +26,15 @@ def topic(request, topic_id):
     """1つのトピックとそれについての全ての記事を表示"""
     topic = Topic.objects.get(id=topic_id)
     # トピックが現在のユーザーが所持するものであることを確認する
-    if topic.owner != request.user:
-        raise Http404
+    # if topic.owner != request.user:
+    #     raise Http404
 
     entries = topic.entry_set.order_by('-date_added')
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
 
 
+@login_required
 def entries(request):
     """全ての記事を表示する"""
     entries = Entry.objects.order_by('date_added').reverse()
@@ -41,6 +42,7 @@ def entries(request):
     return render(request, 'learning_logs/entries.html', context)
 
 
+@login_required
 def entry(request, entry_id):
     """各記事の詳細ページ_topics/entry/<entry_id>で続ける"""
     entry = Entry.objects.get(id=entry_id)
@@ -50,7 +52,7 @@ def entry(request, entry_id):
     return render(request, 'learning_logs/every_entry.html', context)
 
 
-@login_required
+# @login_required
 def new_topic(request):
     """新規トピックを追加する"""
     if request.method != 'POST':
@@ -75,7 +77,7 @@ def new_topic(request):
 
 @login_required
 def new_entry(request):
-    """特定のトピックに新規記事を追加する"""
+    """新規記事を追加する"""
     # topic = Topic.objects.get(id=topic_id)
 
     if request.method != 'POST':
@@ -99,14 +101,14 @@ def new_entry(request):
 
 
 
-@login_required
+# @login_required
 def edit_entry(request, entry_id):
     """既存の記事を編集する"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
     # ログイン制限かけるやつ
-    if topic.owner != request.user:
-        raise Http404
+    # if topic.owner != request.user:
+    #     raise Http404
 
     if request.method != 'POST':
         # 初回リクエスト時は現在の記事の内容がフォームに埋め込まれている
@@ -114,9 +116,11 @@ def edit_entry(request, entry_id):
 
     else:
         # POSTでデータが送信されたのでこれを処理する
-        form = EntryForm(instance=entry, data=request.POST)
+        form = EntryForm(request.POST,request.FILES,instance=entry)
         if form.is_valid():
-            form.save()
+            # form.save()
+            new_entry = form.save(commit=False)
+            new_entry.save()
             return redirect('learning_logs:topic', topic_id=topic.id)
 
     context = {'entry': entry, 'topic': topic, 'form': form}

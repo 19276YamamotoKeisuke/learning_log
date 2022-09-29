@@ -15,8 +15,14 @@
 
     <ul>
             <h4 class="main_text">
+                {% if entry.image %}
                 <img src="/{{entry.image}}" class="img-fluid" style="height:500px;"><br>
+                {% endif %}
                 <a>{{ entry }}</a>
+                <br>
+                <br>
+                {% comment %} 応急処置 {% endcomment %}
+                <a class="btn btn-lg btn-primary" role="button">応募する &raquo;</a>
             </h4>
     </ul>
 
