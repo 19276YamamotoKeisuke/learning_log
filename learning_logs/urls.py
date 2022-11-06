@@ -25,6 +25,7 @@ urlpatterns = [
     path('new_entry/', views.new_entry, name='new_entry'),
     # 記事の編集ページ
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
-    # 画像用
+    # マイページ
+    # path('my_page/', views.my_page, name='my_page'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -125,3 +125,10 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
+
+
+# def my_page(request, user_id):
+#     """マイページ生成"""
+#     user_id = request.user.id
+
+#     return render(request, 'learning_logs/my_page.html', )

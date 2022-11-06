@@ -16,8 +16,8 @@ class EntryForm(forms.ModelForm):
     topic = forms.ModelChoiceField(queryset=Topic.objects.all())
     class Meta:
         model = Entry
-        fields = Entryfields = ['topic','title','image','text']
-        labels = {'topic': '','title': 'タイトル','image':'画像を追加','text':'本文を追加'}
+        fields = Entryfields = ['topic','title','eligibility','image','text']
+        labels = {'topic': '','title': 'タイトル','eligibility':'応募資格','image':'画像を追加','text':'本文を追加'}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}
 
 # class UploadForm(forms.ModelForm):
