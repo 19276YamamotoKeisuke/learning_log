@@ -22,6 +22,7 @@ class Entry(models.Model):
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add = True)
     image = models.ImageField(upload_to='img/', null=True, blank=True)
+    entry_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     
     # title = models.CharField(max_length=200, null=True, blank=True)
 

@@ -90,7 +90,7 @@ def new_entry(request):
         form = EntryForm(request.POST, request.FILES)
         if form.is_valid():
             new_entry = form.save(commit=False)
-            # new_entry.topic = topic
+            new_entry.entry_owner = request.user
             new_entry.save()
             
             return redirect('learning_logs:entries')
@@ -127,8 +127,9 @@ def edit_entry(request, entry_id):
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
-# def my_page(request, user_id):
-#     """マイページ生成"""
-#     user_id = request.user.id
-
-#     return render(request, 'learning_logs/my_page.html', )
+def my_page(request, user_id):
+    """マイページ生成"""
+    user_id = request.user.id
+    entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
+    context = {'user_id': user_id, 'entries': entries}
+    return render(request, 'learning_logs/my_page.html', context)

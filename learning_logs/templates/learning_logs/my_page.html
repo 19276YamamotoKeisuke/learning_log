@@ -1,7 +1,37 @@
 {% extends "learning_logs/base.html" %}
 
+{% block page_header %}
+<h4>"{{ user.username }}" さんのマイページ</h4>
+{% endblock page_header %}
+
 {% block content %}
 
+<table border="1">
+<tr><td><p>ユーザーネーム</p></td><td><p>{{ user.username }}</p></td></tr>
+<tr><td><p>最後にログインした日時</p></td><td><p>{{ user.last_login }}</p></td></tr>
+<tr><td><p>アカウントを作成した日時</p></td><td><p>{{ user.date_joined }}</p></td></tr>
+</table>
+<br>
+<h5>自身の作成した記事一覧</h5>
 
+{% for entry in entries %}
+    <a href="{% url 'learning_logs:entry' entry.id %}">
+        {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
+        <div class="card mb-3">
+            <h4 class="card-header">
+                {{ entry.date_added|date:'Y年m月d日 H:i'}}</a>
+                <small><button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:edit_entry' entry.id %}">
+                    記事を編集
+                </a></small></button>
+            </h4>
+            <div class="card-body">
+                {{ entry.title|linebreaks }}
+            </div>
+        </div>
+    </a>
+
+    {% empty %}
+    <p>まだ記事がありません。</p>
+    {% endfor %}
 
 {% endblock content %}
