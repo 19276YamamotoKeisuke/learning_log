@@ -18,7 +18,7 @@ urlpatterns = [
     # 個別トピックの詳細ページ
     path('topics/<int:topic_id>/', views.topic, name='topic'),
     # 個別記事の詳細ページ
-    path('topics/entries/<int:entry_id>', views.entry, name='entry'),
+    path('topics/entries/<int:entry_id>/', views.entry, name='entry'),
     # 新規トピックの追加ページ
     path('new_topic/', views.new_topic, name='new_topic'),
     # 新規記事の追加ページ
@@ -26,6 +26,10 @@ urlpatterns = [
     # 記事の編集ページ
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
     # マイページ
-    path('my_page/<int:user_id>', views.my_page, name='my_page'),
+    path('my_page/<int:user_id>/', views.my_page, name='my_page'),
+    # 応募確認ページ
+    path('topics/entries/<int:entry_id>/apply/<int:user_id>/', views.apply_entry, name='apply_entry'),
+    # 応募官僚ページ
+    path('topics/entries/<int:entry_id>/apply/<int:user_id>/check/', views.apply_entered, name='apply_entered'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

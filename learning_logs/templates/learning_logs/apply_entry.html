@@ -1,0 +1,10 @@
+{% extends "learning_logs/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<h3>応募最終確認</h3>
+<a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entered' entry.id user.id %}">応募する &raquo;</a>
+
+{% endblock content %}

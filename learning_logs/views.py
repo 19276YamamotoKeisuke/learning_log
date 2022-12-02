@@ -2,7 +2,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry
+from .models import Topic, Entry, Apply
 from .forms import TopicForm, EntryForm
 
 # Create your views here.
@@ -129,7 +129,36 @@ def edit_entry(request, entry_id):
 
 def my_page(request, user_id):
     """マイページ生成"""
-    user_id = request.user.id
+    # user_id = request.user.id
     entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
     context = {'user_id': user_id, 'entries': entries}
     return render(request, 'learning_logs/my_page.html', context)
+
+
+def apply_entry(request, entry_id, user_id):
+    """応募確認ページ"""
+    entry = Entry.objects.get(id=entry_id)
+    # form = Apply(entry_id=entry_id, owner_id=entry.entry_owner_id, applicant_id=user_id)
+    # form.save()
+    context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry }
+    return render(request, 'learning_logs/apply_entry.html',  context)
+    #応募機能仮完成→応募最終確認のページ作成へ
+
+
+def apply_entered(request, entry_id, user_id):
+    """応募完了"""
+    entry = Entry.objects.get(id=entry_id)
+    form = Apply(entry_id=entry_id, owner_id=entry.entry_owner_id, applicant_id=user_id)
+    form.save()
+    context = {'entry_id':entry_id, 'user_id':user_id}
+    return render(request, 'learning_logs/apply_entered.html',  context)
+    # if request.method != 'POST':
+    #     form = ApplyForm()
+    #     entry = Entry.objects.get(id=entry_id)
+    #     context = {'entry': entry}
+    #     return render(request, 'learning_logs/apply_entry.html', context)
+    # else:
+    #     form = ApplyForm(request.POST, request.POST, request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('learning_logs/apply_entry.html')

@@ -25,7 +25,7 @@
                 <a>応募資格：{{ entry.eligibility }}</a>
                 <br>
                 <br>
-                <a class="btn btn-lg btn-primary" role="button">応募する &raquo;</a>
+                <a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entry' entry.id user.id %}">応募する &raquo;</a>
             </h4>
     </ul>
 
