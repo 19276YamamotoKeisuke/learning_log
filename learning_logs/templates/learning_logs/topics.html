@@ -12,11 +12,11 @@
                 <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
             </h3></li>
         {% empty %}
-        <li><h3>トピックはまだ作成されていません。</h3></li>
+        <p>トピックはまだ作成されていません。</p>
         {% endfor %}
     </ul>
 
-    <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_topic' %}">＋ 新規トピックを追加</a></button>
+    {% comment %} <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_topic' %}">＋ 新規トピックを追加</a></button> {% endcomment %}
 
 
 {% endblock content %}

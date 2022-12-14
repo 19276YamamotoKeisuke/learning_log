@@ -16,9 +16,16 @@ class EntryForm(forms.ModelForm):
     topic = forms.ModelChoiceField(queryset=Topic.objects.all())
     class Meta:
         model = Entry
-        fields = Entryfields = ['topic','title','image','text']
-        labels = {'topic': '','title': 'タイトル','image':'画像を追加','text':'本文を追加'}
+        fields = Entryfields = ['topic','title','eligibility','image','text']
+        labels = {'topic': '','title': 'タイトル','eligibility':'応募資格','image':'画像を追加','text':'本文を追加'}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+
+# class ApplyForm(forms.ModelForm):
+#     """応募フォームhidden"""
+#     class Meta:
+#         model = Apply
+#         fields = {'entry_id','owner_id','applicant_id'}
+#         labels = {'entry_id':'', 'owner_id':'', 'applicant_id':'' }
 
 # class UploadForm(forms.ModelForm):
 #     """新規記事画面の画像追加用フォーム"""

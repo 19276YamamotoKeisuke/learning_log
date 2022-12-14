@@ -14,9 +14,18 @@
 {% block content %}
 
     <ul>
+        <h3>{{entry.title}}</h3>
             <h4 class="main_text">
+                {% if entry.image %}
                 <img src="/{{entry.image}}" class="img-fluid" style="height:500px;"><br>
-                <a>{{ entry }}</a>
+                {% endif %}
+                <a>{{ entry.text }}</a>
+                <br>
+                <br>
+                <a>応募資格：{{ entry.eligibility }}</a>
+                <br>
+                <br>
+                <a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entry' entry.id user.id %}">応募する &raquo;</a>
             </h4>
     </ul>
 
