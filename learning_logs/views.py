@@ -17,7 +17,7 @@ def topics(request):
     # topics = Topic.objects.order_by('date_added')
     topics = Topic.objects.order_by('date_added')
     context = {'topics': topics}
-#     objectsは全てのデータを指している→filterでuser選別
+    # objectsは全てのデータを指している→filterでuser選別
     return render(request, 'learning_logs/topics.html', context)
 
 
@@ -131,16 +131,16 @@ def my_page(request, user_id):
     """マイページ生成"""
     # user_id = request.user.id
     entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
-    context = {'user_id': user_id, 'entries': entries}
+    applys = Apply.objects.filter(owner_id=user_id)
+
+    context = {'user_id': user_id, 'entries': entries, 'applys':applys }
     return render(request, 'learning_logs/my_page.html', context)
 
 
 def apply_entry(request, entry_id, user_id):
     """応募確認ページ"""
     entry = Entry.objects.get(id=entry_id)
-    # form = Apply(entry_id=entry_id, owner_id=entry.entry_owner_id, applicant_id=user_id)
-    # form.save()
-    context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry }
+    context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
     return render(request, 'learning_logs/apply_entry.html',  context)
     #応募機能仮完成→応募最終確認のページ作成へ
 
@@ -152,6 +152,7 @@ def apply_entered(request, entry_id, user_id):
     form.save()
     context = {'entry_id':entry_id, 'user_id':user_id}
     return render(request, 'learning_logs/apply_entered.html',  context)
+
     # if request.method != 'POST':
     #     form = ApplyForm()
     #     entry = Entry.objects.get(id=entry_id)

@@ -14,9 +14,12 @@
 <br>
 <h5>自身の作成した記事一覧</h5>
 
+{% for apply in applys %}
+    <a>{{ apply.id }}</a>
+{% endfor %}
+
 {% for entry in entries %}
     <a href="{% url 'learning_logs:entry' entry.id %}">
-        {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
         <div class="card mb-3">
             <h4 class="card-header">
                 {{ entry.date_added|date:'Y年m月d日 H:i'}}</a>
