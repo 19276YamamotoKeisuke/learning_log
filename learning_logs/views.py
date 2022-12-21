@@ -2,7 +2,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry, Apply, Profile
+from .models import Topic, Entry, Apply, Profile, User
 from .forms import TopicForm, EntryForm, ProfileForm
 
 # Create your views here.
@@ -188,7 +188,9 @@ def apply_entry(request, entry_id, user_id):
 def apply_entered(request, entry_id, user_id):
     """応募完了"""
     entry = Entry.objects.get(id=entry_id)
-    form = Apply(entry_id=entry_id, owner_id=entry.entry_owner_id, applicant_id=user_id)
+    # owner = User.objects.get(id=entry.entry_owner)
+    # user = User.objects.get(id=user_id)
+    form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
     form.save()
     context = {'entry_id':entry_id, 'user_id':user_id}
     return render(request, 'learning_logs/apply_entered.html',  context)

@@ -30,17 +30,17 @@ class Entry(models.Model):
 
     def __str__(self):
         """モデルの文字列表現を返す"""
-        return self.text
+        return self.title
 
 
 class Apply(models.Model):
     """記事と記事への応募関連付け"""
-    # entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE)
-    # owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    # applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    entry_id = models.CharField(max_length=20)
-    owner_id = models.CharField(max_length=20)
-    applicant_id = models.CharField(max_length=20)
+    entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE, db_column='entry_id')
+    owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner', db_column='owner_id')
+    applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', db_column='applicant_id')
+    # entry_id = models.CharField(max_length=20)
+    # owner_id = models.CharField(max_length=20)
+    # applicant_id = models.CharField(max_length=20)
     # counter = models.SmallIntegerField(default=0)
 
 
