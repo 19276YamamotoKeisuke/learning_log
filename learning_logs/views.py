@@ -2,8 +2,8 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry, Apply
-from .forms import TopicForm, EntryForm
+from .models import Topic, Entry, Apply, Profile
+from .forms import TopicForm, EntryForm, ProfileForm
 
 # Create your views here.
 def index(request):
@@ -75,6 +75,26 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+def edit_Profile(request, user_id):
+    """プロフィール初期設定"""
+    profile = Profile.objects.get(id=user_id)
+
+    if request.method != 'POST':
+        form = ProfileForm(instance=profile)
+    
+    else:
+        #送信されたデータの処理
+        form = ProfileForm(data=request.POST)
+        if form.is_valid():
+            new_profile = form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.save()
+            return redirect('learning_logs:my_page',user_id)
+    
+    context = {'form': form}
+    return render(request, 'learning_logs/edit_profile.html', context)
+
+
 @login_required
 def new_entry(request):
     """新規記事を追加する"""
@@ -125,6 +145,26 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
+
+
+def edit_Profile(request, user_id):
+    """プロフィール初期設定"""
+    profile = Profile.objects.get(id=user_id)
+
+    if request.method != 'POST':
+        form = ProfileForm(instance=profile)
+    
+    else:
+        #送信されたデータの処理
+        form = ProfileForm(data=request.POST, instance=profile)
+        if form.is_valid():
+            new_profile = form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.save()
+            return redirect('learning_logs:my_page',user_id)
+    
+    context = {'form': form}
+    return render(request, 'learning_logs/edit_profile.html', context)
 
 
 def my_page(request, user_id):
