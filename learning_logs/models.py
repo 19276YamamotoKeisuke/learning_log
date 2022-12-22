@@ -38,10 +38,10 @@ class Apply(models.Model):
     entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE, db_column='entry_id')
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner', db_column='owner_id')
     applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', db_column='applicant_id')
-    # entry_id = models.CharField(max_length=20)
-    # owner_id = models.CharField(max_length=20)
-    # applicant_id = models.CharField(max_length=20)
-    # counter = models.SmallIntegerField(default=0)
+
+    # def __str__(self):
+    #     """admin管理の文字列表現"""
+    #     return self.applicant_id
 
 
 class Profile(models.Model):
@@ -53,6 +53,6 @@ class Profile(models.Model):
     career = models.CharField(max_length=100) #以前所属していた会社&役職
     introduce = models.CharField(max_length=500) #自己紹介&自己PR文
 
-    # def __str__(self):
-    #     """モデルの文字列表現を返す"""
-    #     return self.user
+    def __str__(self):
+        """モデルの文字列表現を返す"""
+        return self.postal_code

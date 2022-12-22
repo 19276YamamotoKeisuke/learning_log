@@ -172,8 +172,9 @@ def my_page(request, user_id):
     # user_id = request.user.id
     entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
     applys = Apply.objects.filter(owner_id=user_id)
+    profile = Profile.objects.get(user=user_id)
 
-    context = {'user_id': user_id, 'entries': entries, 'applys':applys }
+    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'profile':profile}
     return render(request, 'learning_logs/my_page.html', context)
 
 

@@ -5,10 +5,10 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
 <h3>記事詳細　</h3>
-<div class="edit_button">
+{% comment %} <div class="edit_button">
 <small><a href="{% url 'learning_logs:edit_entry' entry.id %}" ><button type="button" class="btn btn-outline-secondary">
     記事を編集
-</a></small></button></div>
+</a></small></button></div> {% endcomment %}
 {% endblock page_header %}
 
 {% block content %}
@@ -19,7 +19,7 @@
                 {% if entry.image %}
                 <img src="/{{entry.image}}" class="img-fluid" style="height:500px;"><br>
                 {% endif %}
-                <a>{{ entry.text }}</a>
+                <a>{{ entry.text | linebreaks | urlize}}</a>
                 <br>
                 <br>
                 <a>応募資格：{{ entry.eligibility }}</a>

@@ -7,5 +7,6 @@ from .models import Topic, Entry, Apply, Profile, User
 admin.site.register(Topic)
 admin.site.register(Entry)
 admin.site.register(Apply)
+# admin.site.register(User)
 admin.site.register(Profile)
 # admin.site.register(UploadImage)
