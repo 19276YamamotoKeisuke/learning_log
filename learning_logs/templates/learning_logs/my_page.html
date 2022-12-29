@@ -31,7 +31,7 @@
 <p>
 <h5>記事への応募者</h5>
 {% for apply in applys %}
-    <a>"{{ apply.applicant_id }}"さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。</a><br>
+    <a>{{ apply.date_added }}に"{{ apply.applicant_id }}"さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。</a><br>
 {% endfor %}
 </p>
 <br>

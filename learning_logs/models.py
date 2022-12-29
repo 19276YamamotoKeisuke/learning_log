@@ -57,4 +57,4 @@ class Profile(models.Model):
 
     def __str__(self):
         """モデルの文字列表現を返す"""
-        return self.user
+        return self.family_name
