@@ -38,6 +38,7 @@ class Apply(models.Model):
     entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE, db_column='entry_id')
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner', db_column='owner_id')
     applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', db_column='applicant_id')
+    date_added = models.DateField(auto_now_add=True)
 
 
 class Profile(models.Model):
@@ -56,4 +57,4 @@ class Profile(models.Model):
 
     def __str__(self):
         """モデルの文字列表現を返す"""
-        return self.postal_code
+        return self.user
