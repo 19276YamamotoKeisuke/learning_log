@@ -27,9 +27,11 @@ urlpatterns = [
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
     # マイページ
     path('my_page/<int:user_id>/', views.my_page, name='my_page'),
+    # プロフィール設定ページ
+    path('my_page/<int:user_id>/edit_profile/', views.edit_Profile, name='edit_Profile'),
     # 応募確認ページ
     path('topics/entries/<int:entry_id>/apply/<int:user_id>/', views.apply_entry, name='apply_entry'),
-    # 応募官僚ページ
+    # 応募完了ページ
     path('topics/entries/<int:entry_id>/apply/<int:user_id>/check/', views.apply_entered, name='apply_entered'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

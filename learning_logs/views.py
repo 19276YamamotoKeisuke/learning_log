@@ -2,8 +2,8 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry, Apply
-from .forms import TopicForm, EntryForm
+from .models import Topic, Entry, Apply, Profile, User
+from .forms import TopicForm, EntryForm, ProfileForm
 
 # Create your views here.
 def index(request):
@@ -75,6 +75,26 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+def edit_Profile(request, user_id):
+    """プロフィール初期設定"""
+    profile = Profile.objects.get(id=user_id)
+
+    if request.method != 'POST':
+        form = ProfileForm(instance=profile)
+    
+    else:
+        #送信されたデータの処理
+        form = ProfileForm(data=request.POST)
+        if form.is_valid():
+            new_profile = form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.save()
+            return redirect('learning_logs:my_page',user_id)
+    
+    context = {'form': form}
+    return render(request, 'learning_logs/edit_profile.html', context)
+
+
 @login_required
 def new_entry(request):
     """新規記事を追加する"""
@@ -127,13 +147,34 @@ def edit_entry(request, entry_id):
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
+def edit_Profile(request, user_id):
+    """プロフィール初期設定"""
+    profile = Profile.objects.get(id=user_id)
+
+    if request.method != 'POST':
+        form = ProfileForm(instance=profile)
+    
+    else:
+        #送信されたデータの処理
+        form = ProfileForm(data=request.POST, instance=profile)
+        if form.is_valid():
+            new_profile = form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.save()
+            return redirect('learning_logs:my_page',user_id)
+    
+    context = {'form': form}
+    return render(request, 'learning_logs/edit_profile.html', context)
+
+
 def my_page(request, user_id):
     """マイページ生成"""
     # user_id = request.user.id
     entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
     applys = Apply.objects.filter(owner_id=user_id)
+    profile = Profile.objects.get(user=user_id)
 
-    context = {'user_id': user_id, 'entries': entries, 'applys':applys }
+    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'profile':profile}
     return render(request, 'learning_logs/my_page.html', context)
 
 
@@ -148,7 +189,9 @@ def apply_entry(request, entry_id, user_id):
 def apply_entered(request, entry_id, user_id):
     """応募完了"""
     entry = Entry.objects.get(id=entry_id)
-    form = Apply(entry_id=entry_id, owner_id=entry.entry_owner_id, applicant_id=user_id)
+    # owner = User.objects.get(id=entry.entry_owner)
+    # user = User.objects.get(id=user_id)
+    form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
     form.save()
     context = {'entry_id':entry_id, 'user_id':user_id}
     return render(request, 'learning_logs/apply_entered.html',  context)

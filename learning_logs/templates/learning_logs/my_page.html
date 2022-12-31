@@ -12,11 +12,31 @@
 <tr><td><p>アカウントを作成した日時</p></td><td><p>{{ user.date_joined }}</p></td></tr>
 </table>
 <br>
-<h5>自身の作成した記事一覧</h5>
+<h5>プロフィール</h5>
+<p>
+<a>{{ profile.family_name }}　</a>
+<a>{{ profile.first_name }}</a><br>
+<a>{{ profile.sex }}</a><br>
+<a>{{ profile.birthday }}</a><br>
+<a>{{ profile.email }}</a><br>
+<a>{{ profile.prefecture }}</a><br>
+<a>{{ profile.address }}</a><br>
+<a>{{ profile.postal_code }}</a><br>
+<a>{{ profile.career }}</a><br>
+<a>{{ profile.introduce | linebreaks | urlize }}</a>
+<a href="{% url 'learning_logs:edit_Profile' user.id%}">プロフィールを設定</a>
+</p>
+<br>
 
+<p>
+<h5>記事への応募者</h5>
 {% for apply in applys %}
-    <a>{{ apply.id }}</a>
+    <a>{{ apply.date_added }}に"{{ apply.applicant_id }}"さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。</a><br>
 {% endfor %}
+</p>
+<br>
+
+<h5>自身の作成した記事一覧</h5>
 
 {% for entry in entries %}
     <a href="{% url 'learning_logs:entry' entry.id %}">
