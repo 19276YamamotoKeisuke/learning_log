@@ -8,7 +8,6 @@ class Topic(models.Model):
     text = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-#     print("サーバー稼働時に呼び出される？")
 
     def __str__(self):
         """モデルの文字列表現を返す"""

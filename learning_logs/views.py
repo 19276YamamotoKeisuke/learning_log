@@ -42,6 +42,14 @@ def entries(request):
     return render(request, 'learning_logs/entries.html', context)
 
 
+# @login_required
+# def users(request):
+#     """全てのユーザーを表示する"""
+#     users = Profile.objects.get()
+#     context = {'users':users}
+#     return render(request, 'learning_logs/users.html', context)
+
+
 @login_required
 def entry(request, entry_id):
     """各記事の詳細ページ_topics/entry/<entry_id>で続ける"""
@@ -52,7 +60,7 @@ def entry(request, entry_id):
     return render(request, 'learning_logs/every_entry.html', context)
 
 
-# @login_required
+@login_required
 def new_topic(request):
     """新規トピックを追加する"""
     if request.method != 'POST':
@@ -75,6 +83,7 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+@login_required
 def edit_Profile(request, user_id):
     """プロフィール初期設定"""
     profile = Profile.objects.get(id=user_id)
@@ -121,7 +130,7 @@ def new_entry(request):
 
 
 
-# @login_required
+@login_required
 def edit_entry(request, entry_id):
     """既存の記事を編集する"""
     entry = Entry.objects.get(id=entry_id)
@@ -147,6 +156,7 @@ def edit_entry(request, entry_id):
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
+@login_required
 def edit_Profile(request, user_id):
     """プロフィール初期設定"""
     profile = Profile.objects.get(id=user_id)
@@ -167,6 +177,7 @@ def edit_Profile(request, user_id):
     return render(request, 'learning_logs/edit_profile.html', context)
 
 
+@login_required
 def my_page(request, user_id):
     """マイページ生成"""
     # user_id = request.user.id
@@ -178,6 +189,19 @@ def my_page(request, user_id):
     return render(request, 'learning_logs/my_page.html', context)
 
 
+@login_required
+def other_page(request, applicant_id):
+    """他ユーザーの情報を閲覧できるページ"""
+    id = applicant_id
+    user = User.objects.get(username=id)
+    # この方法しか今のとこ無理だけどusername重複した場合は？→重複しなかった(アカウント登録画面で弾かれた)
+    profile = Profile.objects.get(user=user.id)
+    context = {'profile':profile}
+
+    return render(request, 'learning_logs/other_users_page.html', context)
+
+
+@login_required
 def apply_entry(request, entry_id, user_id):
     """応募確認ページ"""
     entry = Entry.objects.get(id=entry_id)
@@ -186,6 +210,7 @@ def apply_entry(request, entry_id, user_id):
     #応募機能仮完成→応募最終確認のページ作成へ
 
 
+@login_required
 def apply_entered(request, entry_id, user_id):
     """応募完了"""
     entry = Entry.objects.get(id=entry_id)

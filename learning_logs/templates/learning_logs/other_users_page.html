@@ -1,0 +1,27 @@
+{% extends "learning_logs/base.html" %}
+
+{% block page_header %}
+{% comment %} <h4>"{{ profile.user }}" さんのマイページ</h4> {% endcomment %}
+{% endblock page_header %}
+
+{% block content %}
+
+<table border="1">
+<tr><td><p>ユーザーネーム</p></td><td>{{ profile.user }}</td></tr>
+</table>
+<br>
+<h5>プロフィール</h5>
+<p>
+<a>{{ profile.family_name }}　</a>
+<a>{{ profile.first_name }}</a><br>
+<a>{{ profile.sex }}</a><br>
+<a>{{ profile.birthday }}</a><br>
+<a>{{ profile.email }}</a><br>
+<a>{{ profile.prefecture }}</a><br>
+<a>{{ profile.address }}</a><br>
+<a>{{ profile.postal_code }}</a><br>
+<a>{{ profile.career }}</a><br>
+<a>{{ profile.introduce | linebreaks | urlize }}</a>
+</p>
+<br> 
+{% endblock content %}
