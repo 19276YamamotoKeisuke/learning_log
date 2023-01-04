@@ -23,6 +23,8 @@ class Entry(models.Model):
     date_added = models.DateTimeField(auto_now_add = True)
     image = models.ImageField(upload_to='img/', null=True, blank=True)
     entry_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=50)
+    selection_method = models.TextField()
 
     class Meta:
         verbose_name_plural = 'entries'

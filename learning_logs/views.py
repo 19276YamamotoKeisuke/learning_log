@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry, Apply, Profile, User
-from .forms import TopicForm, EntryForm, ProfileForm
+from .forms import TopicForm, EntryForm, ProfileForm, SearchForm
 
 # Create your views here.
 def index(request):
@@ -37,8 +37,16 @@ def topic(request, topic_id):
 @login_required
 def entries(request):
     """全ての記事を表示する"""
-    entries = Entry.objects.order_by('date_added').reverse()
-    context = {'entries': entries}
+    #仮実装 エラー出るので要改良→ルックアップでできた
+    searchForm = SearchForm(request.GET)
+    if searchForm.is_valid():
+        keyword = searchForm.cleaned_data['keyword']
+        entries = Entry.objects.filter(text__icontains = keyword).order_by('date_added').reverse
+    else:
+        searchForm = SearchForm()
+        entries = Entry.objects.order_by('date_added').reverse()
+        
+    context = {'entries': entries,'searchForm':searchForm}
     return render(request, 'learning_logs/entries.html', context)
 
 

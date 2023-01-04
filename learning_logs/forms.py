@@ -17,9 +17,9 @@ class EntryForm(forms.ModelForm):
     topic = forms.ModelChoiceField(queryset=Topic.objects.all())
     class Meta:
         model = Entry
-        fields = Entryfields = ['topic','title','eligibility','image','text']
-        labels = {'topic': '','title': 'タイトル','eligibility':'応募資格','image':'画像を追加','text':'本文を追加'}
-        widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+        fields = Entryfields = ['topic','title','address','eligibility','image','text','selection_method']
+        labels = {'topic': '','title': 'タイトル/事業者名','address':'事業所住所','eligibility':'応募資格','image':'画像を追加','text':'本文追加','selection_method':'選考方法'}
+        widgets = {'text': forms.Textarea(attrs={'cols': 80}), 'selection_method': forms.Textarea(attrs={'cols': 80})}
 
 class ProfileForm(forms.ModelForm):
     """ユーザープロフィール設定フォーム"""
@@ -31,9 +31,5 @@ class ProfileForm(forms.ModelForm):
         labels = {'family_name':'姓','first_name':'名前','sex':'性別','birthday':'生年月日','email':'emailアドレス','postal_code':'郵便番号', 'prefuctures':'都道府県', 'address':'都道府県以降の住所', 'career': '以前所属していた企業・役職', 'introduce':'自己PR'}
         widgets = {'introduce': forms.Textarea(attrs={'cols': 80}),'birthday':forms.SelectDateWidget(years=[x for x in range(min_year, current_year)])}
 
-# class ApplyForm(forms.ModelForm):
-#     """応募フォームhidden"""
-#     class Meta:
-#         model = Apply
-#         fields = {'entry_id','owner_id','applicant_id'}
-#         labels = {'entry_id':'', 'owner_id':'', 'applicant_id':'' }
+class SearchForm(forms.Form):
+    keyword = forms.CharField(label='', max_length=50)

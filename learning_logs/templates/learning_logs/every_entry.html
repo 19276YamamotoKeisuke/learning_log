@@ -5,10 +5,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
 <h3>記事詳細　</h3>
-{% comment %} <div class="edit_button">
-<small><a href="{% url 'learning_logs:edit_entry' entry.id %}" ><button type="button" class="btn btn-outline-secondary">
-    記事を編集
-</a></small></button></div> {% endcomment %}
+
 {% endblock page_header %}
 
 {% block content %}
@@ -19,12 +16,13 @@
                 {% if entry.image %}
                 <img src="/{{entry.image}}" class="img-fluid" style="height:500px;"><br>
                 {% endif %}
-                <a>{{ entry.text | linebreaks | urlize}}</a>
+                <p>{{ entry.text | linebreaks | urlize}}</p>
                 <br>
+                <p>応募資格：{{ entry.eligibility }}</p>
                 <br>
-                <a>応募資格：{{ entry.eligibility }}</a>
+                <p>事業所住所：{{ entry.address }}</p>
                 <br>
-                <br>
+                <p>選考方法：{{ entry.selection_method | linebreaks | urlize }}</p>
                 <a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entry' entry.id user.id %}">応募する &raquo;</a>
             </h4>
     </ul>

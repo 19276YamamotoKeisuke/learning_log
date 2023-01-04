@@ -6,9 +6,15 @@
 
 {% block content %}
 
-    <p>
-        {% comment %} <a href="{% url 'learning_logs:new_entry' topic.id %}">新しい記事を追加</a> {% endcomment %}
-    </p>
+{% if searchForm %}<!-- searchFormがあれば -->
+    <form action="{% url 'learning_logs:entries' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+      <div>
+        {{ searchForm }}<!-- views.pyから受け取ったsearchFormを表示 -->
+        <input type="submit" value="検索">
+        <a href="{% url 'learning_logs:entries' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+      </div>
+    </form>
+{% endif %}
 
     {% for entry in entries %}
     <a href="{% url 'learning_logs:entry' entry.id %}">
