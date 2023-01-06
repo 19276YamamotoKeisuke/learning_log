@@ -31,9 +31,9 @@
 <p>
 <h5>記事への応募者</h5>
 {% for apply in applys %}
-<a href="{% url 'learning_logs:other_page' apply.applicant_id %}">
-    {{ apply.date_added }}に"{{ apply.applicant_id }}"さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。
-</a><br>
+<p>
+    {{ apply.date_added }}に<a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a>さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。 <a href="http://127.0.0.1:8000/{{ apply.resume }}">履歴書.pdf</a>
+</p>
 {% endfor %}
 </p>
 <br>

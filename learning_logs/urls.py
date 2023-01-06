@@ -28,7 +28,7 @@ urlpatterns = [
     # マイページ
     path('my_page/<int:user_id>/', views.my_page, name='my_page'),
     # 他人のページ
-    path('other_users_page/<str:applicant_id>/', views.other_page, name='other_page'),
+    path('other_users_page/<str:applicant_id>/<int:apply_id>/', views.other_page, name='other_page'),
     # プロフィール設定ページ
     path('my_page/<int:user_id>/edit_profile/', views.edit_Profile, name='edit_Profile'),
     # 応募確認ページ

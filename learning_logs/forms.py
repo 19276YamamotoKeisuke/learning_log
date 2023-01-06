@@ -2,8 +2,17 @@ from socket import fromshare
 from django import forms
 from datetime import datetime
 
-from .models import Topic, Entry, Profile
+from .models import Topic, Entry, Profile, Apply
 # , UploadImage
+
+class ApplyForm(forms.ModelForm):
+    """応募時履歴書&自己PR追加フォーム"""
+    class Meta:
+        model = Apply
+        fields = ['PRtext','resume']
+        labels = {'PRtext':'自己PR文','resume':'履歴書をアップロードする'}
+        widgets = {'PRtext': forms.Textarea(attrs={'cols': 80})}
+
 
 class TopicForm(forms.ModelForm):
     """新規トピック追加用フォーム"""

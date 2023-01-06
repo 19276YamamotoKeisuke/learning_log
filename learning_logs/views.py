@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry, Apply, Profile, User
-from .forms import TopicForm, EntryForm, ProfileForm, SearchForm
+from .forms import TopicForm, EntryForm, ProfileForm, SearchForm, ApplyForm
 
 # Create your views here.
 def index(request):
@@ -198,13 +198,14 @@ def my_page(request, user_id):
 
 
 @login_required
-def other_page(request, applicant_id):
+def other_page(request, applicant_id, apply_id):
     """他ユーザーの情報を閲覧できるページ"""
-    id = applicant_id
-    user = User.objects.get(username=id)
+    s_id = applicant_id
+    user = User.objects.get(username=s_id)
     # この方法しか今のとこ無理だけどusername重複した場合は？→重複しなかった(アカウント登録画面で弾かれた)
     profile = Profile.objects.get(user=user.id)
-    context = {'profile':profile}
+    apply = Apply.objects.get(id=apply_id)
+    context = {'profile':profile, 'apply':apply}
 
     return render(request, 'learning_logs/other_users_page.html', context)
 
@@ -213,21 +214,37 @@ def other_page(request, applicant_id):
 def apply_entry(request, entry_id, user_id):
     """応募確認ページ"""
     entry = Entry.objects.get(id=entry_id)
-    context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
+    if request.method != 'POST':
+        form = ApplyForm()
+    
+    else:
+        #送信されたデータの処理
+        form = ApplyForm(request.POST, request.FILES)
+        if form.is_valid():
+            apply = form.save(commit=False)
+            # apply = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
+            apply.entry_id = entry
+            apply.owner_id = entry.entry_owner
+            apply.applicant_id = request.user
+            apply.save()
+            context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
+            return redirect('learning_logs:apply_entered', user_id, entry_id)
+
+    context = {'form':form, 'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
     return render(request, 'learning_logs/apply_entry.html',  context)
     #応募機能仮完成→応募最終確認のページ作成へ
 
 
 @login_required
-def apply_entered(request, entry_id, user_id):
+def apply_entered(request, user_id, entry_id):
     """応募完了"""
-    entry = Entry.objects.get(id=entry_id)
+    # entry = Entry.objects.get(id=entry_id)
     # owner = User.objects.get(id=entry.entry_owner)
     # user = User.objects.get(id=user_id)
-    form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
-    form.save()
-    context = {'entry_id':entry_id, 'user_id':user_id}
-    return render(request, 'learning_logs/apply_entered.html',  context)
+    # form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
+    # form.save()
+    # context = {'entry_id':entry_id, 'user_id':user_id}
+    return render(request, 'learning_logs/apply_entered.html')
 
     # if request.method != 'POST':
     #     form = ApplyForm()

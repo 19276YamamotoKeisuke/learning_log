@@ -17,7 +17,6 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# とりあえず画像フォームは保留
 # MEDIA_URL = '/media/'
 
 

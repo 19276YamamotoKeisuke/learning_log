@@ -39,6 +39,8 @@ class Apply(models.Model):
     entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE, db_column='entry_id')
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner', db_column='owner_id')
     applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', db_column='applicant_id')
+    PRtext = models.TextField()
+    resume = models.FileField(upload_to='resume/')
     date_added = models.DateField(auto_now_add=True)
 
 
