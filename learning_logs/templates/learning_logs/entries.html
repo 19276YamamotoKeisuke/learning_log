@@ -33,7 +33,7 @@
     </a> {% endcomment %}
 
   <div class="card mb-3">
-    <a href="{% url 'learning_logs:entry' entry.id %}">
+    <a href="{% url 'learning_logs:entry' entry.id %}" class="stretched-link"></a>
     <div class="row g-0">
       <div class="col-md-4">
         {% if entry.image %}
@@ -43,13 +43,14 @@
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">{{ entry.title|linebreaks }}</h5>
+          <a class="gray">
           <p class="card-text">トピック: {{ entry.topic }}</p>
           <p class="card-text">{{ entry.eligibility }}</p>
+          </a>
           <p class="card-text"><small class="text-muted">Last updated {{ entry.date_added|date:'Y年m月d日 H:i'}}</small></p>
         </div>
       </div>
     </div>
-    </a>
   </div>
 
 
