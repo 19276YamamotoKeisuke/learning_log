@@ -1,39 +1,128 @@
 {% extends "learning_logs/base.html" %}
+{% load static %}
+
 
 {% block page_header %}
 <h4>"{{ user.username }}" さんのマイページ</h4>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
 {% endblock page_header %}
 
 {% block content %}
 
-<table border="1">
-<tr><td><p>ユーザーネーム</p></td><td><p>{{ user.username }}</p></td></tr>
-<tr><td><p>最後にログインした日時</p></td><td><p>{{ user.last_login }}</p></td></tr>
-<tr><td><p>アカウントを作成した日時</p></td><td><p>{{ user.date_joined }}</p></td></tr>
-</table>
+<div class="center">
+<table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">　</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>ユーザーネーム</td>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>最後にログインした日時</td>
+        <td>{{ user.last_login }}</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>アカウントを作成した日時</td>
+        <td>{{ user.date_joined }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
 <br>
 <h5>プロフィール</h5>
-<p>
-<a>{{ profile.family_name }}　</a>
-<a>{{ profile.first_name }}</a><br>
-<a>{{ profile.sex }}</a><br>
-<a>{{ profile.birthday }}</a><br>
-<a>{{ profile.email }}</a><br>
-<a>{{ profile.prefecture }}</a><br>
-<a>{{ profile.address }}</a><br>
-<a>{{ profile.postal_code }}</a><br>
-<a>{{ profile.career }}</a><br>
-<a>{{ profile.introduce | linebreaks | urlize }}</a>
-<a href="{% url 'learning_logs:edit_Profile' user.id%}">プロフィールを設定</a>
-</p>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">{{ profile.user }}</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"></th>
+            <td>苗字</td>
+            <td>{{ profile.family_name }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>名前</td>
+            <td>{{ profile.first_name }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>性別</td>
+            <td>{{ profile.sex }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>生年月日</td>
+            <td>{{ profile.birthday|date:'Y年m月d日' }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Eメール</td>
+            <td>{{ profile.email }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>都道府県</td>
+            <td>{{ profile.prefectures }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>住所</td>
+            <td>{{ profile.address }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>郵便番号</td>
+            <td>{{ profile.postal_code }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>経歴</td>
+            <td>{{ profile.career }}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>自己PR</td>
+            <td>{{ profile.introduce | linebreaks | urlize }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="right">
+<button class="btn btn-outline-secondary" id="button-addon2"><a href="{% url 'learning_logs:edit_Profile' user.id%}">プロフィールを設定</a></button>
+      </div>
 <br>
 
 <p>
 <h5>記事への応募者</h5>
 {% for apply in applys %}
-<p>
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a></h5>
+      <h6 class="card-subtitle mb-2 text-muted">あなたの記事"{{ apply.entry_id }}"へ応募しました/{{ apply.date_added }}</h6>
+      <p class="card-text">{{ apply.PRtext | linebreaks | urlize  }}</p>
+      {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
+      <a href="http://127.0.0.1:8000/{{ apply.resume }}" class="card-link">履歴書.pdf</a>
+    </div>
+  </div><br>
+
+{% comment %} <p>
     {{ apply.date_added }}に<a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a>さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。 <a href="http://127.0.0.1:8000/{{ apply.resume }}">履歴書.pdf</a>
-</p>
+</p> {% endcomment %}
 {% endfor %}
 </p>
 <br>
@@ -44,7 +133,8 @@
     <a href="{% url 'learning_logs:entry' entry.id %}">
         <div class="card mb-3">
             <h4 class="card-header">
-                {{ entry.date_added|date:'Y年m月d日 H:i'}}</a>
+                {{ entry.date_added|date:'Y年m月d日 H:i'}}　　</a>
+                <a class>
                 <small><button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:edit_entry' entry.id %}">
                     記事を編集
                 </a></small></button>
@@ -58,5 +148,7 @@
     {% empty %}
     <p>まだ記事がありません。</p>
     {% endfor %}
+
+</div>
 
 {% endblock content %}

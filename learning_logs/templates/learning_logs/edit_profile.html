@@ -1,14 +1,23 @@
 {% extends "learning_logs/base.html" %}
+{% load static %}
+
+
+{% block page_header %}
+<h4>プロフィールを更新:</h4>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/new_entry.css' %}">
+{% endblock page_header %}
 
 {% block content %}
 
     {% comment %} <p><a>{{ user }}</a><p> {% endcomment %}
-    <p>プロフィールを編集:</p>
 
+<div class="formtag">
     <form action="{% url 'learning_logs:edit_Profile' user.id %}" method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="submit">プロフィールを更新</button>
+        {% comment %} <button name="submit">プロフィールを更新</button> {% endcomment %}
+        <button name="submit" class="btn btn-primary" >プロフィールを更新</button>
     </form>
+</div>
 
 {% endblock content %}

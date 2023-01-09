@@ -38,15 +38,15 @@ def topic(request, topic_id):
 def entries(request):
     """全ての記事を表示する"""
     #仮実装 エラー出るので要改良→ルックアップでできた
-    searchForm = SearchForm(request.GET)
-    if searchForm.is_valid():
-        keyword = searchForm.cleaned_data['keyword']
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        keyword = form.cleaned_data['keyword']
         entries = Entry.objects.filter(text__icontains = keyword).order_by('date_added').reverse
     else:
-        searchForm = SearchForm()
+        form = SearchForm()
         entries = Entry.objects.order_by('date_added').reverse()
         
-    context = {'entries': entries,'searchForm':searchForm}
+    context = {'entries': entries, 'form': form}
     return render(request, 'learning_logs/entries.html', context)
 
 
@@ -84,7 +84,7 @@ def new_topic(request):
             new_topic.owner = request.user
             new_topic.save()
             # form.save()
-            return redirect('learning_logs:topics')
+            return redirect('learning_logs:new_entry')
 
     # 空または無効のフォームを表示する
     context = {'form': form}
@@ -158,7 +158,7 @@ def edit_entry(request, entry_id):
             # form.save()
             new_entry = form.save(commit=False)
             new_entry.save()
-            return redirect('learning_logs:topic', topic_id=topic.id)
+            return redirect('learning_logs:entries')
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)

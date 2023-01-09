@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # サードパーティのアプリケーション
     'bootstrap4',
+    # 'widget_tweaks',
 
     # デフォルトのdjangoアプリケーション
     'django.contrib.admin',
@@ -51,7 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 'crispy_forms',
+
 ]
+
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,6 +81,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'builtins': [
+                'bootstrap4.templatetags.bootstrap4', # 追加
             ],
         },
     },
