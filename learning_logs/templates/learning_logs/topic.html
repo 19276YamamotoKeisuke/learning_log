@@ -11,20 +11,24 @@
     </p> {% endcomment %}
 
     {% for entry in entries %}
-    <a href="{% url 'learning_logs:entry' entry.id %}">
-        {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
-        <div class="card mb-3">
-            <h4 class="card-header">
-                {{ entry.date_added|date:'Y年m月d日 H:i'}}
-                {% comment %} <small><a href="{% url 'learning_logs:edit_entry' entry.id %}"><button type="button" class="btn btn-outline-secondary">
-                    記事を編集
-                </a></small></button> {% endcomment %}
-            </h4>
+
+    <div class="card mb-3">
+        <a href="{% url 'learning_logs:entry' entry.id %}">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="/{{entry.image}}" class="card-img-top" style="height:300px;">
+          </div>
+          <div class="col-md-8">
             <div class="card-body">
-                {{ entry.title|linebreaks }}
+              <h5 class="card-title">{{ entry.title|linebreaks }}</h5>
+              <p class="card-text">トピック: {{ entry.topic }}</p>
+              <p class="card-text">{{ entry.eligibility }}</p>
+              <p class="card-text"><small class="text-muted">Last updated {{ entry.date_added|date:'Y年m月d日 H:i'}}</small></p>
             </div>
+          </div>
         </div>
-    </a>
+        </a>
+      </div>
 
     {% empty %}
     <p>このトピックにはまだ記事がありません。</p>

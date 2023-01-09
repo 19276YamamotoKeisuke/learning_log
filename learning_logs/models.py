@@ -5,10 +5,9 @@ from django.conf import settings
 # Create your models here.
 class Topic(models.Model):
     """ユーザーが学んでいるトピックを表す"""
-    text = models.CharField(max_length=200)
+    text = models.CharField(max_length=20, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-#     print("サーバー稼働時に呼び出される？")
 
     def __str__(self):
         """モデルの文字列表現を返す"""
@@ -24,6 +23,8 @@ class Entry(models.Model):
     date_added = models.DateTimeField(auto_now_add = True)
     image = models.ImageField(upload_to='img/', null=True, blank=True)
     entry_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=50)
+    selection_method = models.TextField()
 
     class Meta:
         verbose_name_plural = 'entries'
@@ -38,6 +39,8 @@ class Apply(models.Model):
     entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE, db_column='entry_id')
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner', db_column='owner_id')
     applicant_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', db_column='applicant_id')
+    PRtext = models.TextField()
+    resume = models.FileField(upload_to='resume/')
     date_added = models.DateField(auto_now_add=True)
 
 

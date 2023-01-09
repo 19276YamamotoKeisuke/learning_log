@@ -1,30 +1,57 @@
 {% extends 'learning_logs/base.html' %}
+{% load static %}
 
 {% block page_header %}
 <h3>記事一覧</h3>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
 {% endblock page_header %}
 
 {% block content %}
 
-    <p>
-        {% comment %} <a href="{% url 'learning_logs:new_entry' topic.id %}">新しい記事を追加</a> {% endcomment %}
-    </p>
+{% if form %}<!-- searchFormがあれば -->
+    <form action="{% url 'learning_logs:entries' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+        <div class="btn-group" role="group" aria-label="Basic example">
+            {{ form }}<!-- views.pyから受け取ったsearchFormを表示 -->
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" name="submit">検索</button>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" name="submit">
+            <a href="{% url 'learning_logs:entries' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す --></button>
+        </div>
+    </form><br>
+
+{% endif %}
 
     {% for entry in entries %}
-    <a href="{% url 'learning_logs:entry' entry.id %}">
-        {% comment %} {% url 'learning_logs:entry' entry.id %} {% endcomment %}
+    {% comment %} <a href="{% url 'learning_logs:entry' entry.id %}">
         <div class="card mb-3">
             <h4 class="card-header">
                 {{ entry.date_added|date:'Y年m月d日 H:i'}}</a>
-                {% comment %} <small><a href="{% url 'learning_logs:edit_entry' entry.id %}"><button type="button" class="btn btn-outline-secondary">
-                    記事を編集
-                </a></small></button> {% endcomment %}
             </h4>
             <div class="card-body">
                 {{ entry.title|linebreaks }}
             </div>
         </div>
+    </a> {% endcomment %}
+
+  <div class="card mb-3">
+    <a href="{% url 'learning_logs:entry' entry.id %}">
+    <div class="row g-0">
+      <div class="col-md-4">
+        {% if entry.image %}
+        <img src="/{{entry.image}}" class="card-img-top" style="height:300px;">
+        {% endif %}
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ entry.title|linebreaks }}</h5>
+          <p class="card-text">トピック: {{ entry.topic }}</p>
+          <p class="card-text">{{ entry.eligibility }}</p>
+          <p class="card-text"><small class="text-muted">Last updated {{ entry.date_added|date:'Y年m月d日 H:i'}}</small></p>
+        </div>
+      </div>
+    </div>
     </a>
+  </div>
+
 
     {% empty %}
     <p>まだ記事がありません。</p>

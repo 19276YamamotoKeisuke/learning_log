@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry, Apply, Profile, User
-from .forms import TopicForm, EntryForm, ProfileForm
+from .forms import TopicForm, EntryForm, ProfileForm, SearchForm, ApplyForm
 
 # Create your views here.
 def index(request):
@@ -37,9 +37,25 @@ def topic(request, topic_id):
 @login_required
 def entries(request):
     """全ての記事を表示する"""
-    entries = Entry.objects.order_by('date_added').reverse()
-    context = {'entries': entries}
+    #仮実装 エラー出るので要改良→ルックアップでできた
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        keyword = form.cleaned_data['keyword']
+        entries = Entry.objects.filter(text__icontains = keyword).order_by('date_added').reverse
+    else:
+        form = SearchForm()
+        entries = Entry.objects.order_by('date_added').reverse()
+        
+    context = {'entries': entries, 'form': form}
     return render(request, 'learning_logs/entries.html', context)
+
+
+# @login_required
+# def users(request):
+#     """全てのユーザーを表示する"""
+#     users = Profile.objects.get()
+#     context = {'users':users}
+#     return render(request, 'learning_logs/users.html', context)
 
 
 @login_required
@@ -52,7 +68,7 @@ def entry(request, entry_id):
     return render(request, 'learning_logs/every_entry.html', context)
 
 
-# @login_required
+@login_required
 def new_topic(request):
     """新規トピックを追加する"""
     if request.method != 'POST':
@@ -68,13 +84,14 @@ def new_topic(request):
             new_topic.owner = request.user
             new_topic.save()
             # form.save()
-            return redirect('learning_logs:topics')
+            return redirect('learning_logs:new_entry')
 
     # 空または無効のフォームを表示する
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+@login_required
 def edit_Profile(request, user_id):
     """プロフィール初期設定"""
     profile = Profile.objects.get(id=user_id)
@@ -121,7 +138,7 @@ def new_entry(request):
 
 
 
-# @login_required
+@login_required
 def edit_entry(request, entry_id):
     """既存の記事を編集する"""
     entry = Entry.objects.get(id=entry_id)
@@ -141,12 +158,13 @@ def edit_entry(request, entry_id):
             # form.save()
             new_entry = form.save(commit=False)
             new_entry.save()
-            return redirect('learning_logs:topic', topic_id=topic.id)
+            return redirect('learning_logs:entries')
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
+@login_required
 def edit_Profile(request, user_id):
     """プロフィール初期設定"""
     profile = Profile.objects.get(id=user_id)
@@ -167,6 +185,7 @@ def edit_Profile(request, user_id):
     return render(request, 'learning_logs/edit_profile.html', context)
 
 
+@login_required
 def my_page(request, user_id):
     """マイページ生成"""
     # user_id = request.user.id
@@ -178,23 +197,54 @@ def my_page(request, user_id):
     return render(request, 'learning_logs/my_page.html', context)
 
 
+@login_required
+def other_page(request, applicant_id, apply_id):
+    """他ユーザーの情報を閲覧できるページ"""
+    s_id = applicant_id
+    user = User.objects.get(username=s_id)
+    # この方法しか今のとこ無理だけどusername重複した場合は？→重複しなかった(アカウント登録画面で弾かれた)
+    profile = Profile.objects.get(user=user.id)
+    apply = Apply.objects.get(id=apply_id)
+    context = {'profile':profile, 'apply':apply}
+
+    return render(request, 'learning_logs/other_users_page.html', context)
+
+
+@login_required
 def apply_entry(request, entry_id, user_id):
     """応募確認ページ"""
     entry = Entry.objects.get(id=entry_id)
-    context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
+    if request.method != 'POST':
+        form = ApplyForm()
+    
+    else:
+        #送信されたデータの処理
+        form = ApplyForm(request.POST, request.FILES)
+        if form.is_valid():
+            apply = form.save(commit=False)
+            # apply = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
+            apply.entry_id = entry
+            apply.owner_id = entry.entry_owner
+            apply.applicant_id = request.user
+            apply.save()
+            context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
+            return redirect('learning_logs:apply_entered', user_id, entry_id)
+
+    context = {'form':form, 'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
     return render(request, 'learning_logs/apply_entry.html',  context)
     #応募機能仮完成→応募最終確認のページ作成へ
 
 
-def apply_entered(request, entry_id, user_id):
+@login_required
+def apply_entered(request, user_id, entry_id):
     """応募完了"""
-    entry = Entry.objects.get(id=entry_id)
+    # entry = Entry.objects.get(id=entry_id)
     # owner = User.objects.get(id=entry.entry_owner)
     # user = User.objects.get(id=user_id)
-    form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
-    form.save()
-    context = {'entry_id':entry_id, 'user_id':user_id}
-    return render(request, 'learning_logs/apply_entered.html',  context)
+    # form = Apply(entry_id=entry, owner_id=entry.entry_owner, applicant_id=request.user)
+    # form.save()
+    # context = {'entry_id':entry_id, 'user_id':user_id}
+    return render(request, 'learning_logs/apply_entered.html')
 
     # if request.method != 'POST':
     #     form = ApplyForm()

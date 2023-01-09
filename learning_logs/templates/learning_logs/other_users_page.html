@@ -1,0 +1,76 @@
+{% extends "learning_logs/base.html" %}
+{% load static %}
+
+
+{% block page_header %}
+<h4>"{{ profile.user }}" さんのプロフィール</h4>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
+{% endblock page_header %}
+
+{% block content %}
+<div class="center">
+        <h5>プロフィール</h5>
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">　</th>
+                    <th scope="col">ユーザー</th>
+                    <th scope="col">{{ profile.user }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>苗字</td>
+                    <td>{{ profile.family_name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>名前</td>
+                    <td>{{ profile.first_name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>性別</td>
+                    <td>{{ profile.sex }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>生年月日</td>
+                    <td>{{ profile.birthday|date:'Y年m月d日' }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>Eメール</td>
+                    <td>{{ profile.email }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>都道府県</td>
+                    <td>{{ profile.prefectures }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>住所</td>
+                    <td>{{ profile.address }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>郵便番号</td>
+                    <td>{{ profile.postal_code }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>経歴</td>
+                    <td>{{ profile.career }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>自己PR</td>
+                    <td>{{ profile.introduce | linebreaks | urlize }}</td>
+                  </tr>
+                </tbody>
+              </table>
+</p>
+</div>
+{% endblock content %}

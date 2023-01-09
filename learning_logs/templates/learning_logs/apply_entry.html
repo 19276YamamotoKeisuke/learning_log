@@ -2,9 +2,21 @@
 {% load static %}
 
 
+{% block page_header %}
+<h4>応募準備</h4>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/new_entry.css' %}">
+{% endblock page_header %}
+
 {% block content %}
 
-<h3>応募最終確認</h3>
-<a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entered' entry.id user.id %}">応募する &raquo;</a>
+<div class="formtag">
+<form action="{% url 'learning_logs:apply_entry' entry.id user.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>"{{ entry.title }}/{{ entry.entry_owner }}"　へ本当に応募してよろしいですか？</p>
+    <button name='submit' type="submit" class="btn btn-primary">応募する</button>
+{% comment %} <a class="btn btn-lg btn-primary" role="button" type= href="{% url 'learning_logs:apply_entered' entry.id user.id %}">応募する &raquo;</a> {% endcomment %}
+</form>
+</div>
 
 {% endblock content %}

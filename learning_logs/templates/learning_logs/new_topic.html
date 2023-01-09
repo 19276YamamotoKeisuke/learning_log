@@ -1,11 +1,25 @@
 {% extends "learning_logs/base.html" %}
+{% load static %}
+
+{% block page_header %}
+<h4>新規トピックを追加:</h4>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/new_entry.css' %}">
+{% endblock page_header %}
 
 {% block content %}
-<p>新規トピックを追加:</P>
+{% comment %} <p>新規トピックを追加:</P> {% endcomment %}
 
-    <form action="{% url 'learning_logs:new_topic' %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">トピックを追加</button>
+    <div class="formtag">
+    <form action="{% url 'learning_logs:new_topic' %}" method='post'><br>
+        <div class="input-group mb-3">
+            {% csrf_token %}
+            {% comment %} {{ form.as_p }} {% endcomment %}
+            {{ form }}
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" name="submit">トピックを追加</button>
+          </div>
+    </div>
+        {% comment %} {% csrf_token %}
+        {{ form.text }}
+        <button name="submit">トピックを追加</button> {% endcomment %}
     </form>
 {% endblock content %}
