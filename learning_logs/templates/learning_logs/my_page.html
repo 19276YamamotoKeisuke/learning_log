@@ -112,7 +112,7 @@
 
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a></h5>
+      <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id %}">"{{ apply.applicant_id }}"</a></h5>
       <h6 class="card-subtitle mb-2 text-muted">あなたの記事"{{ apply.entry_id }}"へ応募しました/{{ apply.date_added }}</h6>
       <p class="card-text">{{ apply.PRtext | linebreaks | urlize  }}</p>
       {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}

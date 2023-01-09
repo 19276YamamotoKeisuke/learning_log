@@ -50,12 +50,22 @@ def entries(request):
     return render(request, 'learning_logs/entries.html', context)
 
 
-# @login_required
-# def users(request):
-#     """全てのユーザーを表示する"""
-#     users = Profile.objects.get()
-#     context = {'users':users}
-#     return render(request, 'learning_logs/users.html', context)
+@login_required
+def users(request):
+    """全てのユーザーを表示する"""
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        keyword = form.cleaned_data['keyword']
+        users = Profile.objects.filter(introduce__icontains = keyword)
+    else:
+        form = SearchForm()
+        users = Profile.objects.all()
+        
+    context = {'users': users, 'form': form}
+    return render(request, 'learning_logs/users.html', context)
+    # users = Profile.objects.all()
+    # context = {'users':users}
+    # return render(request, 'learning_logs/users.html', context)
 
 
 @login_required
@@ -198,14 +208,14 @@ def my_page(request, user_id):
 
 
 @login_required
-def other_page(request, applicant_id, apply_id):
+def other_page(request, applicant_id):
     """他ユーザーの情報を閲覧できるページ"""
     s_id = applicant_id
     user = User.objects.get(username=s_id)
     # この方法しか今のとこ無理だけどusername重複した場合は？→重複しなかった(アカウント登録画面で弾かれた)
     profile = Profile.objects.get(user=user.id)
-    apply = Apply.objects.get(id=apply_id)
-    context = {'profile':profile, 'apply':apply}
+    # apply = Apply.objects.get(id=apply_id)
+    context = {'profile':profile}
 
     return render(request, 'learning_logs/other_users_page.html', context)
 

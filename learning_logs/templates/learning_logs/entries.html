@@ -8,6 +8,7 @@
 
 {% block content %}
 
+<div class="center">
 {% if form %}<!-- searchFormがあれば -->
     <form action="{% url 'learning_logs:entries' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
         <div class="btn-group" role="group" aria-label="Basic example">
@@ -57,5 +58,5 @@
     {% empty %}
     <p>まだ記事がありません。</p>
     {% endfor %}
-
+</div>
 {% endblock content %}

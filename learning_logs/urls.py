@@ -15,6 +15,8 @@ urlpatterns = [
     path('topics/', views.topics, name = 'topics'),
     # 全ての記事を表示するページ
     path('topics/entries/', views.entries, name='entries'),
+    # 全てのユーザーを表示する
+    path('users/', views.users, name='users'),
     # 個別トピックの詳細ページ
     path('topics/<int:topic_id>/', views.topic, name='topic'),
     # 個別記事の詳細ページ
@@ -28,7 +30,7 @@ urlpatterns = [
     # マイページ
     path('my_page/<int:user_id>/', views.my_page, name='my_page'),
     # 他人のページ
-    path('other_users_page/<str:applicant_id>/<int:apply_id>/', views.other_page, name='other_page'),
+    path('other_users_page/<str:applicant_id>/', views.other_page, name='other_page'),
     # プロフィール設定ページ
     path('my_page/<int:user_id>/edit_profile/', views.edit_Profile, name='edit_Profile'),
     # 応募確認ページ
