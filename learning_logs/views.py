@@ -25,13 +25,24 @@ def topics(request):
 def topic(request, topic_id):
     """1つのトピックとそれについての全ての記事を表示"""
     topic = Topic.objects.get(id=topic_id)
-    # トピックが現在のユーザーが所持するものであることを確認する
-    # if topic.owner != request.user:
-    #     raise Http404
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        keyword = form.cleaned_data['keyword']
+        entries = Entry.objects.filter(text__icontains = keyword).order_by('date_added').reverse
+    else:
+        form = SearchForm()
+        entries = Entry.objects.order_by('date_added').reverse()
+        
+    context = {'topic': topic,'entries': entries, 'form': form}
+    return render(request, 'learning_logs/entries.html', context)
+    # topic = Topic.objects.get(id=topic_id)
+    # # トピックが現在のユーザーが所持するものであることを確認する
+    # # if topic.owner != request.user:
+    # #     raise Http404
 
-    entries = topic.entry_set.order_by('-date_added')
-    context = {'topic': topic, 'entries': entries}
-    return render(request, 'learning_logs/topic.html', context)
+    # entries = topic.entry_set.order_by('-date_added')
+    # context = {'topic': topic, 'entries': entries}
+    # return render(request, 'learning_logs/topic.html', context)
 
 
 @login_required
@@ -168,7 +179,7 @@ def edit_entry(request, entry_id):
             # form.save()
             new_entry = form.save(commit=False)
             new_entry.save()
-            return redirect('learning_logs:entries')
+            return redirect('learning_logs:entry',entry_id)
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
@@ -199,11 +210,12 @@ def edit_Profile(request, user_id):
 def my_page(request, user_id):
     """マイページ生成"""
     # user_id = request.user.id
-    entries = Entry.objects.filter(entry_owner=request.user).order_by('date_added')
+    entries = Entry.objects.filter(entry_owner=request.user).order_by('-date_added')
     applys = Apply.objects.filter(owner_id=user_id)
+    entry_applied = Apply.objects.filter(applicant_id=user_id)
     profile = Profile.objects.get(user=user_id)
 
-    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'profile':profile}
+    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'entry_applied':entry_applied,'profile':profile}
     return render(request, 'learning_logs/my_page.html', context)
 
 

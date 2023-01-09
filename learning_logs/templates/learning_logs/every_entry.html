@@ -2,32 +2,41 @@
 {% load static %}
 
 {% block page_header %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
-<h3>記事詳細　</h3>
 
 {% endblock page_header %}
 
 {% block content %}
 
     <ul>
-        <h3>{{entry.title}}</h3>
-            <h4 class="main_text">
+        <div class="center">
                 {% if entry.image %}
-                <img src="/{{entry.image}}" class="img-fluid" style="height:500px;"><br>
+                <div class="img-content">
+                <img src="/{{entry.image}}" class="img-fluid"><br>
+                </div>
                 {% endif %}
-                <p>{{ entry.text | linebreaks | urlize}}</p>
+                    <h3>{{entry.title}}</h3>
+                    <h4>トピック：{{ entry.topic }}</h4>
+                    <div class="gray"><a>{{ entry.date_added }}</a></div>
+                    <div class="border-top"></div>
+                <p class="main_text">{{ entry.text | linebreaks | urlize}}</p>
                 <br>
-                <p>応募資格：{{ entry.eligibility }}</p>
+                <div class="border-top"></div>
+                <div class="main_text">
+                    <h3>募集要項</h3>
+                    <br>
+                <h4>応募資格：</h4><p>{{ entry.eligibility | linebreaks}}</p>
                 <br>
-                <p>事業所住所：{{ entry.address }}</p>
+                <h4>事業所住所：</h4><p>{{ entry.address }}</p>
                 <br>
-                <p>選考方法：{{ entry.selection_method | linebreaks | urlize }}</p>
+                <h4>選考方法：</h4><p>{{ entry.selection_method | linebreaks | urlize }}</p><br>
                 <a class="btn btn-lg btn-primary" role="button" href="{% url 'learning_logs:apply_entry' entry.id user.id %}">応募する &raquo;</a>
-            </h4>
+                </div>
     </ul>
 
 <h3>
+</div>
     {% comment %} <a href="{% url 'learning_logs:new_topic' %}">新規トピックを追加</a></h3> {% endcomment %}
 
 

@@ -30,11 +30,11 @@ class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = Entryfields = ['topic','title','address','eligibility','image','text','selection_method']
-        labels = {'topic': '','title': 'タイトル','address':'事業所住所','eligibility':'応募資格','image':'画像を追加','text':'本文追加','selection_method':'選考方法'}
+        labels = {'topic': '','title': 'タイトル','address':'事業所住所','eligibility':'希望する人','image':'画像を追加','text':'本文追加','selection_method':'選考方法'}
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'eligibility': forms.TextInput(attrs={'class': 'form-control'}),
+            'eligibility': forms.Textarea(attrs={'class': 'form-control'}),
             'text': forms.Textarea({'class':'form-control'}),
             'selection_method': forms.Textarea({'class':'form-control'}),
         }
