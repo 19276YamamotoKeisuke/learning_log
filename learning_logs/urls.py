@@ -37,5 +37,7 @@ urlpatterns = [
     path('topics/entries/<int:entry_id>/apply/<int:user_id>/', views.apply_entry, name='apply_entry'),
     # 応募完了ページ
     path('topics/entries/<int:entry_id>/apply/<int:user_id>/check/', views.apply_entered, name='apply_entered'),
+    # 会社側おススメページ
+    path('other_users_page/recommend/<str:profile_user>/', views.recommend, name='recommend'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

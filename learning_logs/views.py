@@ -2,8 +2,8 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry, Apply, Profile, User
-from .forms import TopicForm, EntryForm, ProfileForm, SearchForm, ApplyForm
+from .models import Topic, Entry, Apply, Profile, User, Recommend
+from .forms import TopicForm, EntryForm, ProfileForm, SearchForm, ApplyForm, RecommendForm
 
 # Create your views here.
 def index(request):
@@ -214,8 +214,9 @@ def my_page(request, user_id):
     applys = Apply.objects.filter(owner_id=user_id)
     entry_applied = Apply.objects.filter(applicant_id=user_id)
     profile = Profile.objects.get(user=user_id)
+    recommend = Recommend.objects.filter(user=user_id)
 
-    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'entry_applied':entry_applied,'profile':profile}
+    context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'entry_applied':entry_applied, 'profile':profile, 'recommend':recommend}
     return render(request, 'learning_logs/my_page.html', context)
 
 
@@ -258,6 +259,31 @@ def apply_entry(request, entry_id, user_id):
 
 
 @login_required
+def recommend(request, profile_user):
+    """応募確認ページ"""
+    name = profile_user
+    user = User.objects.get(username=name)
+    profile = Profile.objects.get(user=user.id)
+    if request.method != 'POST':
+        form = RecommendForm()
+    
+    else:
+        # if request.user != entry.
+        #送信されたデータの処理
+        form = RecommendForm(request.POST)
+        if form.is_valid():
+            recommend = form.save(commit=False)
+            # recommend.owner_id = request.user
+            recommend.user_id = user.id
+            recommend.save()
+            # context = {'entry_id':entry_id, 'user_id':user_id, 'entry':entry}
+            return redirect('learning_logs:other_page', profile.user)
+
+    context = {'form':form, 'profile':profile}
+    return render(request, 'learning_logs/recommend.html',  context)
+
+
+@login_required
 def apply_entered(request, user_id, entry_id):
     """応募完了"""
     # entry = Entry.objects.get(id=entry_id)
@@ -267,14 +293,3 @@ def apply_entered(request, user_id, entry_id):
     # form.save()
     # context = {'entry_id':entry_id, 'user_id':user_id}
     return render(request, 'learning_logs/apply_entered.html')
-
-    # if request.method != 'POST':
-    #     form = ApplyForm()
-    #     entry = Entry.objects.get(id=entry_id)
-    #     context = {'entry': entry}
-    #     return render(request, 'learning_logs/apply_entry.html', context)
-    # else:
-    #     form = ApplyForm(request.POST, request.POST, request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('learning_logs/apply_entry.html')

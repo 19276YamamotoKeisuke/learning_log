@@ -105,6 +105,22 @@
 <button class="btn btn-outline-secondary" id="button-addon2"><a href="{% url 'learning_logs:edit_Profile' user.id%}">プロフィールを設定</a></button>
       </div>
 <br>
+<h5>あなたへの推薦</h5>
+{% for r in recommend %}
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{% url 'learning_logs:entry' r.entry_id %}">"{{ r.entry }}"</a></h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ r.date_added }}</h6>
+      <p class="card-text">{{ r.text | linebreaks | urlize | truncatechars:30 }}</p>
+      {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
+    </div>
+  </div><br>
+
+  {% endfor %}
+  <br>
+  <div class="border-top"></div>
+  <br>
 
 <p>
 <h5>記事への応募者</h5>
@@ -138,7 +154,7 @@
     </div><br>
 
 {% endfor %}
-</p>
+
 <br>
 
 <h5>自身の作成した記事一覧</h5>
@@ -163,6 +179,7 @@
     <p>まだ記事がありません。</p>
     {% endfor %}
 
+  </p>
 </div>
 
 {% endblock content %}

@@ -44,6 +44,15 @@ class Apply(models.Model):
     date_added = models.DateField(auto_now_add=True)
 
 
+class Recommend(models.Model):
+    """企業からユーザーへのおすすめ"""
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name='recommend1')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommend2')
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommend3')
+    text = models.TextField()
+    date_added = models.DateField(auto_now_add=True)
+
+
 class Profile(models.Model):
     """ユーザープロフィール"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
