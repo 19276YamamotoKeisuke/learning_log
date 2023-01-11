@@ -1,11 +1,15 @@
 {% extends "learning_logs/base.html" %}
+{% load static %}
 
 {% block page_header %}
 <h3>トピック一覧</h3>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
 {% endblock page_header %}
 
 {% block content %}
 
+<div class="center">
     <ul>
         {% for topic in topics %}
             <li><h3>
@@ -15,7 +19,7 @@
         <p>トピックはまだ作成されていません。</p>
         {% endfor %}
     </ul>
-
+</div>
     {% comment %} <button type="button" class="btn btn-outline-secondary"><a href="{% url 'learning_logs:new_topic' %}">＋ 新規トピックを追加</a></button> {% endcomment %}
 
 

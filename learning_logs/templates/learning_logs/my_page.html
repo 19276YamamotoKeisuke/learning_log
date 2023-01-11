@@ -5,7 +5,7 @@
 {% block page_header %}
 <h4>"{{ user.username }}" さんのマイページ</h4>
 <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}"> {% endcomment %}
 {% endblock page_header %}
 
 {% block content %}
@@ -156,7 +156,7 @@
     <div class="card-body">
       <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id %}">"{{ apply.applicant_id }}"</a></h5>
       <h6 class="card-subtitle mb-2 text-muted">あなたの記事"{{ apply.entry_id }}"へ応募しました/{{ apply.date_added }}</h6>
-      <p class="card-text">{{ apply.PRtext | linebreaks | urlize  }}</p>
+      <p class="card-text">{{ apply.PRtext | linebreaks | urlize | truncatechars:40 }}</p>
       {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
       <a href="http://127.0.0.1:8000/{{ apply.resume }}" class="card-link">履歴書.pdf</a>
     </div>
@@ -173,7 +173,7 @@
       <div class="card-body">
         <h5 class="card-title"><a>"{{ l.applicant_id }}"(あなた)</a></h5>
         <h6 class="card-subtitle mb-2 text-muted">記事"{{ l.entry_id }}"へ応募しました/{{ l.date_added }}</h6>
-        <p class="card-text">{{ l.PRtext | linebreaks | urlize  }}</p>
+        <p class="card-text">{{ l.PRtext | linebreaks | urlize | truncatechars:40 }}</p>
         {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
         <a href="http://127.0.0.1:8000/{{ l.resume }}" class="card-link">履歴書.pdf</a>
       </div>
