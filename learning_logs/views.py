@@ -188,14 +188,25 @@ def edit_entry(request, entry_id):
 @login_required
 def edit_Profile(request, user_id):
     """プロフィール初期設定"""
-    profile = Profile.objects.get(id=user_id)
+    
+    if Profile.objects.filter(user=user_id).exists():
+        profile = Profile.objects.get(user=user_id)
+        print('え')
 
     if request.method != 'POST':
-        form = ProfileForm(instance=profile)
+        if Profile.objects.filter(user=user_id).exists():
+            form = ProfileForm(instance=profile)
+            print('あ')
+        else:
+            form = ProfileForm()
+            print('い')
     
     else:
         #送信されたデータの処理
-        form = ProfileForm(data=request.POST, instance=profile)
+        if Profile.objects.filter(user=user_id).exists():
+            form = ProfileForm(data=request.POST, instance=profile)
+        else:
+            form = ProfileForm(data=request.POST)
         if form.is_valid():
             new_profile = form.save(commit=False)
             new_profile.user = request.user
@@ -213,7 +224,10 @@ def my_page(request, user_id):
     entries = Entry.objects.filter(entry_owner=request.user).order_by('-date_added')
     applys = Apply.objects.filter(owner_id=user_id)
     entry_applied = Apply.objects.filter(applicant_id=user_id)
-    profile = Profile.objects.get(user=user_id)
+    if Profile.objects.filter(user=user_id).exists():
+        profile = Profile.objects.get(user=user_id)
+    else:
+        profile = ''
     recommend = Recommend.objects.filter(user=user_id)
 
     context = {'user_id': user_id, 'entries': entries, 'applys':applys, 'entry_applied':entry_applied, 'profile':profile, 'recommend':recommend}

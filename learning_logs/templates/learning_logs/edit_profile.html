@@ -11,7 +11,9 @@
 
     {% comment %} <p><a>{{ user }}</a><p> {% endcomment %}
 <div class="formtag">
-    <p>※プロフィール内にURLを記述するときは、URLの前後にスペースを挿入してください</p>
+    <p>※プロフィール内にURLを記述するときは、URLの前後にスペースを挿入してください。<br>
+        また企業経営者として登録された方は、住所には本社所在地をご記入ください。
+    </p>
     <form action="{% url 'learning_logs:edit_Profile' user.id %}" method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form.as_p }}
