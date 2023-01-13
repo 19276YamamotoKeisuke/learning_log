@@ -248,6 +248,19 @@ def other_page(request, applicant_id):
 
 
 @login_required
+def other_page2(request, applicant_id):
+    """他ユーザーの情報を閲覧できるページ"""
+    s_id = applicant_id
+    user = User.objects.get(username=s_id)
+    # この方法しか今のとこ無理だけどusername重複した場合は？→重複しなかった(アカウント登録画面で弾かれた)
+    profile = Profile.objects.get(user=user.id)
+    # apply = Apply.objects.get(id=apply_id)
+    context = {'profile':profile}
+
+    return render(request, 'learning_logs/other_users_page2.html', context)
+
+
+@login_required
 def apply_entry(request, entry_id, user_id):
     """応募確認ページ"""
     entry = Entry.objects.get(id=entry_id)
