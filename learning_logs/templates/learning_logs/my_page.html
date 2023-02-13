@@ -5,6 +5,7 @@
 {% block page_header %}
 <h4>"{{ user.username }}" さんのマイページ</h4>
 <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/text-align.css' %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}"> {% endcomment %}
 {% endblock page_header %}
 
 {% block content %}
@@ -105,6 +106,47 @@
 <button class="btn btn-outline-secondary" id="button-addon2"><a href="{% url 'learning_logs:edit_Profile' user.id%}">プロフィールを設定</a></button>
       </div>
 <br>
+<h5>あなたへの推薦</h5>
+{% for r in recommend %}
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{% url 'learning_logs:entry' r.entry_id %}">"{{ r.entry }}"</a></h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ r.date_added }}</h6>
+      <p class="card-text">{{ r.text | linebreaks | urlize | truncatechars:30 }}</p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+        続きを読む
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">{{ r.entry }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span class="gray">{{ r.date_added }}</span>
+              {{ r.text | linebreaks | urlize }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+              {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
+    </div>
+  </div><br>
+
+  {% endfor %}
+  <br>
+  <div class="border-top"></div>
+  <br>
 
 <p>
 <h5>記事への応募者</h5>
@@ -112,19 +154,33 @@
 
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a></h5>
+      <h5 class="card-title"><a href="{% url 'learning_logs:other_page' apply.applicant_id %}">"{{ apply.applicant_id }}"</a></h5>
       <h6 class="card-subtitle mb-2 text-muted">あなたの記事"{{ apply.entry_id }}"へ応募しました/{{ apply.date_added }}</h6>
-      <p class="card-text">{{ apply.PRtext | linebreaks | urlize  }}</p>
+      <p class="card-text">{{ apply.PRtext | linebreaks | urlize | truncatechars:40 }}</p>
       {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
       <a href="http://127.0.0.1:8000/{{ apply.resume }}" class="card-link">履歴書.pdf</a>
     </div>
   </div><br>
 
-{% comment %} <p>
-    {{ apply.date_added }}に<a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}">"{{ apply.applicant_id }}"</a>さんがあなたの記事"{{ apply.entry_id }}"へ応募しました。 <a href="http://127.0.0.1:8000/{{ apply.resume }}">履歴書.pdf</a>
-</p> {% endcomment %}
+  {% endfor %}
+  <br>
+  <div class="border-top"></div>
+  <br>
+  <h5>あなたが応募した記事</h5>
+  {% for l in entry_applied %}
+  
+  <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><a>"{{ l.applicant_id }}"(あなた)</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">記事"{{ l.entry_id }}"へ応募しました/{{ l.date_added }}</h6>
+        <p class="card-text">{{ l.PRtext | linebreaks | urlize | truncatechars:40 }}</p>
+        {% comment %} <a href="{% url 'learning_logs:other_page' apply.applicant_id apply.id %}" class="card-link">ユーザープロフィールを見る</a> {% endcomment %}
+        <a href="http://127.0.0.1:8000/{{ l.resume }}" class="card-link">履歴書.pdf</a>
+      </div>
+    </div><br>
+
 {% endfor %}
-</p>
+
 <br>
 
 <h5>自身の作成した記事一覧</h5>
@@ -149,6 +205,7 @@
     <p>まだ記事がありません。</p>
     {% endfor %}
 
+  </p>
 </div>
 
 {% endblock content %}

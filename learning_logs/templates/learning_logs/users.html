@@ -1,0 +1,41 @@
+{% extends 'learning_logs/base.html' %}
+{% load static %}
+
+{% block page_header %}
+<h3>ユーザー一覧</h3>
+<link rel="stylesheet" type="text/css" href="{% static 'learning_logs/every_entry.css' %}">
+{% endblock page_header %}
+
+{% block content %}
+
+<div class="center">
+{% if form %}<!-- searchFormがあれば -->
+    <form action="{% url 'learning_logs:users' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+        <div class="btn-group" role="group" aria-label="Basic example">
+            {{ form }}<!-- views.pyから受け取ったsearchFormを表示 -->
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" name="submit">検索</button>
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" name="submit">
+            <a href="{% url 'learning_logs:users' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す --></button>
+        </div>
+    </form><br>
+
+{% endif %}
+
+
+    {% for user in users %}
+
+
+  <div class="card border-secondary mb-3">
+    <a href="{% url 'learning_logs:other_page2' user.user %}" class="stretched-link" ></a>
+    <div class="card-header">{{ user.user }}</div>
+    <div class="card-body text-secondary">
+      <h5 class="card-title">{{ user.family_name }}{{ user.first_name }}</h5>
+      <p class="card-text">{{ user.career }}</p>
+      <p class="card-text">{{ user.introduce | truncatechars:30 }}</p>
+    </div>
+  </div>
+
+    {% endfor %}
+</div>
+
+{% endblock content %}

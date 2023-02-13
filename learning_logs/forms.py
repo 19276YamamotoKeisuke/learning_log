@@ -2,7 +2,7 @@ from socket import fromshare
 from django import forms
 from datetime import datetime
 
-from .models import Topic, Entry, Profile, Apply
+from .models import Topic, Entry, Profile, Apply, Recommend
 # , UploadImage
 
 class ApplyForm(forms.ModelForm):
@@ -13,6 +13,16 @@ class ApplyForm(forms.ModelForm):
         labels = {'PRtext':'自己PR文','resume':'履歴書をアップロードする'}
         widgets = {'PRtext': forms.Textarea(attrs={'class': 'form-control'})}
 
+class RecommendForm(forms.ModelForm):
+    """会社からの記事のおススメ"""
+    # entry = forms.ModelChoiceField(queryset=Entry.objects.filter(owner=))
+    class Meta:
+        model = Recommend
+        fields = ['entry','text']
+        labels = {'entry':'おすすめする記事を選択','text':'PR文'}
+        widgets = {
+            'text': forms.Textarea({'class':'form-control'}),
+        }
 
 class TopicForm(forms.ModelForm):
     """新規トピック追加用フォーム"""
@@ -30,11 +40,11 @@ class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = Entryfields = ['topic','title','address','eligibility','image','text','selection_method']
-        labels = {'topic': '','title': 'タイトル/事業者名','address':'事業所住所','eligibility':'応募資格','image':'画像を追加','text':'本文追加','selection_method':'選考方法'}
+        labels = {'topic': '','title': 'タイトル','address':'事業所住所','eligibility':'希望する人','image':'画像を追加','text':'本文追加','selection_method':'選考方法'}
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'eligibility': forms.TextInput(attrs={'class': 'form-control'}),
+            'eligibility': forms.Textarea(attrs={'class': 'form-control'}),
             'text': forms.Textarea({'class':'form-control'}),
             'selection_method': forms.Textarea({'class':'form-control'}),
         }

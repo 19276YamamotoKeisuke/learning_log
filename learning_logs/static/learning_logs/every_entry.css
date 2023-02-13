@@ -2,9 +2,29 @@
 .edit_button {
     text-align: right;
 }
-.main_text {
-    text-align: center;
+.img-content {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3%;
+    max-width: 100%;
+    height: auto;
 }
 .gray {
     color: gray;
+}
+.center {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    margin-top: 0%;
+    padding: 10%;
+}
+.center-mini {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+.main_text {
+    padding-top: 5%;
 }
