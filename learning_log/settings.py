@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
+SECRET_KEY = get_random_secret_key()
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # MEDIA_URL = '/media/'
@@ -27,10 +29,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 SECRET_KEY = 'django-insecure-$v=xjde97)#c1qfnpf-rzccsk!_6)mkgr0(m7q%=onz$(j)1ic'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
